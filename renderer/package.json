@@ -1,6 +1,6 @@
 {
   "name": "@luna-engine/renderer",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "WebGL2 based game engine",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@luna-engine/core": "^0.0.19",
-    "@luna-engine/utility": "^0.0.19"
+    "@luna-engine/core": "0.0.19",
+    "@luna-engine/utility": "0.0.20"
   }
 }

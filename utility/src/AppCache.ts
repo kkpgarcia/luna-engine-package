@@ -17,7 +17,7 @@ export default class AppCache
         return this._instance;
     }
 
-    private _textureCache: Map<string, any>;
+    private _textureCache: Map<string, ArrayBufferView>;
     private _shaderCache: Map<string, string>;
 
     constructor()
@@ -39,7 +39,7 @@ export default class AppCache
         }
     }
 
-    public AddTexture(key: string, image: any, override?: false): void
+    public AddTexture(key: string, image: ArrayBufferView, override?: false): void
     {
         if (this.KeyCheck(this._textureCache, key) && !override)
         {
@@ -61,7 +61,7 @@ export default class AppCache
         this._shaderCache.set(key, source);
     }
 
-    public GetTexture(key: string): any
+    public GetTexture(key: string): ArrayBufferView
     {
         return this._textureCache.get(key);
     }

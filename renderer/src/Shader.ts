@@ -3,7 +3,7 @@ import { AppCache, CacheType } from "@luna-engine/utility";
 import RenderingContext from "./RenderingContext";
 
 export default class Shader
-{
+{ 
     private _shader: WebGLProgram;
     private _uniformLocationCache: Map<string, WebGLUniformLocation>;
 

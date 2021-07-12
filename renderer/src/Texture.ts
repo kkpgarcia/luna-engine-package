@@ -1,4 +1,5 @@
 import RenderingContext from "./RenderingContext";
+import { AppCache, CacheType } from "@luna-engine/utility";
 
 export default class Texture
 {
@@ -24,11 +25,11 @@ export default class Texture
     constructor(path: string)
     {
         this._filePath = path;
+        this._localBuffer = AppCache.instance.GetTexture(path);
         this._width = 0;
         this._height = 0;
         this._bbp = 0;
 
-        //TODO: Load image here
         //Flip the image since OpenGL starts 0 from lower left
 
         const gl = RenderingContext.instance.gl;
@@ -47,6 +48,8 @@ export default class Texture
         {
             //TODO: free this local buffer if you need. see if you need this to persist
         }
+
+        AppCache.instance.DisposeKey(CacheType.TEXTURE, path);
     }
 
     public Bind(slot = 0): void
