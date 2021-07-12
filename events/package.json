@@ -1,5 +1,5 @@
 {
-  "name": "luna-engine",
+  "name": "@luna-engine/events",
   "version": "0.0.19",
   "description": "WebGL2 based game engine",
   "main": "dist/index.js",
@@ -8,6 +8,7 @@
     "/dist"
   ],
   "scripts": {
+    "p-install": "npm install @luna-engine/core @luna-engine/utility --registry http://localhost:4873/",
     "build": "tsc",
     "deploy": "npm run build && npm publish --registry http://localhost:4873",
     "test": "npx jest"
@@ -17,5 +18,9 @@
   "devDependencies": {
     "ts-node": "^10.0.0",
     "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@luna-engine/core": "0.0.19",
+    "@luna-engine/utility": "0.0.19"
   }
 }

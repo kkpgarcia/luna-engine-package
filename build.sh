@@ -4,7 +4,7 @@ for entry in $packages
 do
     if [ $entry != ls ]
     then
-        jq '.version = "0.0.19"' $entry > $entry.tmp && cp $entry.tmp $entry && rm $entry.tmp
+        jq '.version = "0.0.20"' $entry > $entry.tmp && cp $entry.tmp $entry && rm $entry.tmp
     fi
 done
 

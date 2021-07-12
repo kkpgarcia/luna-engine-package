@@ -1,5 +1,5 @@
-import Debug from "../Debug/Debug";
-import AppCache, { CacheType } from "../Util/AppCache";
+import { Debug } from "@luna-engine/core";
+import { AppCache, CacheType } from "@luna-engine/utility";
 import RenderingContext from "./RenderingContext";
 
 export default class Shader

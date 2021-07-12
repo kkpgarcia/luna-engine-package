@@ -1,5 +1,5 @@
 {
-  "name": "luna-engine",
+  "name": "@luna-engine/core",
   "version": "0.0.19",
   "description": "WebGL2 based game engine",
   "main": "dist/index.js",

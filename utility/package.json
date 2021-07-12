@@ -1,5 +1,5 @@
 {
-  "name": "luna-engine",
+  "name": "@luna-engine/utility",
   "version": "0.0.19",
   "description": "WebGL2 based game engine",
   "main": "dist/index.js",
@@ -10,12 +10,16 @@
   "scripts": {
     "build": "tsc",
     "deploy": "npm run build && npm publish --registry http://localhost:4873",
-    "test": "npx jest"
+    "test": "npx jest",
+    "p-install": "npm install @luna-engine/core --registry http://localhost:4873/"
   },
   "author": "Kyle Garcia - kkpgarcia@gmail.com",
   "license": "ISC",
   "devDependencies": {
     "ts-node": "^10.0.0",
     "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@luna-engine/core": "0.0.19"
   }
 }

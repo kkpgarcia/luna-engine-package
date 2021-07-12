@@ -1,4 +1,4 @@
-import Debug from "../Debug/Debug";
+import { Debug } from "@luna-engine/core";
 import MathConst from "./MathConst";
  
 export default class MathImpl

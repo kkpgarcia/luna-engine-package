@@ -1,5 +1,5 @@
-import Debug from "../Debug/Debug";
-import ArrayEx from "../Util/ArrayEx";
+import { Debug } from "@luna-engine/core";
+import { ArrayEx } from "@luna-engine/utility";
 import EventArgs from "./EventArgs";
 
 export default class NotificationCenter
