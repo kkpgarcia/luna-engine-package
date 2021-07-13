@@ -26,6 +26,7 @@ export default class RenderingContext
     public Init(canvas: HTMLCanvasElement): void
     {
         this._gl = canvas.getContext("webgl2") as WebGL2RenderingContext;
+        this._gl.pixelStorei(this._gl.UNPACK_FLIP_Y_WEBGL, true);
         this._isInitalized = true;
     }
 }

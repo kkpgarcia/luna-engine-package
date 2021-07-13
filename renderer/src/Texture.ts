@@ -4,12 +4,11 @@ import { AppCache, CacheType } from "@luna-engine/utility";
 export default class Texture
 {
     private _texture: WebGLTexture;
-    private _filePath: string;
     private _width: number;
     private _height: number;
-    private _bbp: number;
+
     //Teture Data
-    private _localBuffer: ArrayBufferView;
+    private _localBuffer: HTMLImageElement;
 
     public get width(): number
     {
@@ -24,13 +23,10 @@ export default class Texture
     //Mobile has 8 Texture Slots
     constructor(path: string)
     {
-        this._filePath = path;
         this._localBuffer = AppCache.instance.GetTexture(path);
-        this._width = 0;
-        this._height = 0;
-        this._bbp = 0;
-
-        //Flip the image since OpenGL starts 0 from lower left
+        this._width = this._localBuffer.width;
+        this._height = this._localBuffer.height;
+        this._localBuffer.style.transform = 'rotate(180 deg)';
 
         const gl = RenderingContext.instance.gl;
 
@@ -46,10 +42,9 @@ export default class Texture
 
         if(this._localBuffer)
         {
-            //TODO: free this local buffer if you need. see if you need this to persist
+            AppCache.instance.DisposeKey(CacheType.TEXTURE, path);
         }
 
-        AppCache.instance.DisposeKey(CacheType.TEXTURE, path);
     }
 
     public Bind(slot = 0): void

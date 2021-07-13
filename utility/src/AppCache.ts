@@ -17,13 +17,13 @@ export default class AppCache
         return this._instance;
     }
 
-    private _textureCache: Map<string, ArrayBufferView>;
+    private _textureCache: Map<string, HTMLImageElement>;
     private _shaderCache: Map<string, string>;
 
     constructor()
     {
-        this._textureCache = new Map<string, any>();
-        this._shaderCache = new Map<string, any>();
+        this._textureCache = new Map<string, HTMLImageElement>();
+        this._shaderCache = new Map<string, string>();
     }
 
     public GetCount(type: CacheType)
@@ -39,7 +39,7 @@ export default class AppCache
         }
     }
 
-    public AddTexture(key: string, image: ArrayBufferView, override?: false): void
+    public AddTexture(key: string, image: HTMLImageElement, override?: false): void
     {
         if (this.KeyCheck(this._textureCache, key) && !override)
         {
@@ -61,7 +61,7 @@ export default class AppCache
         this._shaderCache.set(key, source);
     }
 
-    public GetTexture(key: string): ArrayBufferView
+    public GetTexture(key: string): HTMLImageElement
     {
         return this._textureCache.get(key);
     }
