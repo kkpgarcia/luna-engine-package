@@ -24,7 +24,7 @@ export default class NotificationCenter
         this._invoking = new Array<Array<Function>>();
     }
 
-    public AddObserver(callback: Function, name: string, sender?: Object): void
+    public AddObserver(callback: Function, name: string): void
     {
         if (!this.IsValid(callback, name))
         {
@@ -38,7 +38,7 @@ export default class NotificationCenter
         }
 
         var subTable: Map<Object, Array<Function>> = this._table.get(name);
-        const key = this.GetKey(sender);
+        const key = this.GetKey(this);
 
 
         if (!subTable.has(key))
@@ -59,7 +59,7 @@ export default class NotificationCenter
         }
     }
 
-    public RemoveObserver(callback: Function, name: string, sender: Object): void
+    public RemoveObserver(callback: Function, name: string): void
     {
         if (!this.IsValid(callback, name))
         {
@@ -73,7 +73,7 @@ export default class NotificationCenter
         }
 
         let subTable: Map<Object, Array<Function>> = this._table[name];
-        let key = this.GetKey(sender);
+        let key = this.GetKey(this);
 
         if (!subTable.has(key))
         {
@@ -94,7 +94,7 @@ export default class NotificationCenter
         }
     }
 
-    public PostNotification(name: string, args: EventArgs<any> = null, sender: Object = this): void
+    public PostNotification(name: string, args: EventArgs<any> = null): void
     {
         if (name === '')
         {
@@ -108,7 +108,7 @@ export default class NotificationCenter
         }
 
         let subTable: Map<Object, Array<Function>> = this._table.get(name);
-        let key = this.GetKey(sender);
+        let key = this.GetKey(this);
 
         this.InvokeFunction(subTable, key, args);
     }
@@ -129,7 +129,7 @@ export default class NotificationCenter
                     continue;
                 }
                 
-                handler(sender, args);
+                handler(args);
             }
 
             this._invoking = ArrayEx.RemoveElement(this._invoking, handlers);
