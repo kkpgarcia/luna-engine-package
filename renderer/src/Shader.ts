@@ -64,10 +64,61 @@ export default class Shader
         gl.uniform1i(this.GetUniformLocation(name), data);
     }
 
+    public SetUniform2i(name: string, data: number[]): void
+    {
+        const gl = RenderingContext.instance.gl;
+        gl.uniform2i(this.GetUniformLocation(name), data[0], data[1]);
+    }
+
+    public SetUniform3i(name: string, data: number[]): void
+    {
+        const gl = RenderingContext.instance.gl;
+        gl.uniform3i(this.GetUniformLocation(name), data[0], data[1], data[2]);
+    }
+
+    public SetUniform4i(name: string, data: number[]): void
+    {
+        const gl = RenderingContext.instance.gl;
+        gl.uniform4i(this.GetUniformLocation(name), data[0], data[1], data[2], data[3]);
+    }
+
+    public SetUniform1f(name: string, data: number): void
+    {
+        const gl = RenderingContext.instance.gl;
+        gl.uniform1f(this.GetUniformLocation(name), data)
+    }
+    public SetUniform2f(name: string, data: number[]): void
+    {
+        const gl = RenderingContext.instance.gl;
+        gl.uniform2f(this.GetUniformLocation(name), data[0], data[1])
+    }
+    public SetUniform3f(name: string, data: number[]): void
+    {
+        const gl = RenderingContext.instance.gl;
+        gl.uniform3f(this.GetUniformLocation(name), data[0], data[1], data[2])
+    }
     public SetUniform4f(name: string, data: number[]): void
     {
         const gl = RenderingContext.instance.gl;
         gl.uniform4f(this.GetUniformLocation(name), data[0], data[1], data[2], data[3])
+    }
+
+    public SetUniformMatrix2fv(name: string, transpose: boolean, data: number[]): void
+    {
+        const gl = RenderingContext.instance.gl;
+        gl.uniformMatrix2fv(this.GetUniformLocation(name), transpose, data);
+    }
+
+    public SetUniformMatrix3fv(name: string, transpose: boolean, data: number[]): void
+    {
+        const gl = RenderingContext.instance.gl;
+        gl.uniformMatrix3fv(this.GetUniformLocation(name), transpose, data);
+    }
+
+    public SetUniformMatrix4xv(name: string, transpose: boolean, data: number[]): void
+    {
+        const gl = RenderingContext.instance.gl;
+        gl.uniformMatrix4fv(this.GetUniformLocation(name), transpose, data);
     }
 
     public GetUniformLocation(name: string): WebGLUniformLocation
