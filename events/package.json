@@ -1,6 +1,6 @@
 {
   "name": "@luna-engine/events",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "WebGL2 based game engine",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
