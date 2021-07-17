@@ -115,7 +115,7 @@ export default class Shader
         gl.uniformMatrix3fv(this.GetUniformLocation(name), transpose, data);
     }
 
-    public SetUniformMatrix4xv(name: string, transpose: boolean, data: number[]): void
+    public SetUniformMatrix4fv(name: string, transpose: boolean, data: number[]): void
     {
         const gl = RenderingContext.instance.gl;
         gl.uniformMatrix4fv(this.GetUniformLocation(name), transpose, data);
@@ -127,7 +127,7 @@ export default class Shader
 
         if (this._uniformLocationCache.has(name))
         {
-            return this._uniformLocationCache[name];
+            return this._uniformLocationCache.get(name);
         }
 
         const location = gl.getUniformLocation(this._shader, name);
