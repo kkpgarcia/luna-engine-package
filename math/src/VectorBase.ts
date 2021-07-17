@@ -6,18 +6,18 @@ export default class VectorBase
 
     public Add_i(vec: VectorBase): VectorBase
     {
-        this._val = MathImpl.Add(this._val, vec.AsArray());
+        this._val = MathImpl.Add(this._val, vec.ToArray());
         return this as VectorBase;
     }
 
     public Subtract_i(vec: VectorBase): VectorBase
     {
-        this._val = MathImpl.Subtract(this._val, vec.AsArray());
+        this._val = MathImpl.Subtract(this._val, vec.ToArray());
         return this;
     }
     
     public Divide_i(vec: VectorBase): VectorBase {
-        this._val = MathImpl.Divide(this._val, vec.AsArray());
+        this._val = MathImpl.Divide(this._val, vec.ToArray());
         return this;
     }
 
@@ -31,19 +31,19 @@ export default class VectorBase
     }
 
     public static Dot(vec_a: VectorBase, vec_b: VectorBase): number {
-        return MathImpl.Dot(vec_a.AsArray(), vec_b.AsArray());
+        return MathImpl.Dot(vec_a.ToArray(), vec_b.ToArray());
     }
 
     public static Distance(from: VectorBase, to: VectorBase): number {
-        return MathImpl.Distance(from.AsArray(), to.AsArray());
+        return MathImpl.Distance(from.ToArray(), to.ToArray());
     }
 
     public Lerp_i(from: VectorBase, to: VectorBase, time: number): VectorBase {
-        this._val = MathImpl.Lerp(from.AsArray(), to.AsArray(), time);
+        this._val = MathImpl.Lerp(from.ToArray(), to.ToArray(), time);
         return this;
     }
 
-    public AsArray(): number[]
+    public ToArray(): number[]
     {
         return this._val;
     }
