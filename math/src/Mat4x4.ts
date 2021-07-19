@@ -253,6 +253,20 @@ export default class Mat4x4
         );
     }
 
+    public static LookAt(cameraPos: Vector3, target: Vector3, up: Vector3): Mat4x4
+    {
+        const z = cameraPos.Subtract(target).Normalize();
+        const x = Vector3.Cross(up, z).Normalize();
+        const y = Vector3.Cross(z, x).Normalize();
+
+        return new Mat4x4(
+            x[0], x[1], x[2], 0,
+            y[0], y[1], y[2], 0,
+            z[0], z[1], z[2], 0,
+            cameraPos[0], cameraPos[1], cameraPos[2], 1
+        );
+    }
+
     public Multiply_i(b: Mat4x4): Mat4x4
     {
         return Mat4x4.Multiply(this, b);

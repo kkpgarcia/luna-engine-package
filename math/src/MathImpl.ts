@@ -58,8 +58,7 @@ export default class MathImpl
 
         if (mag > MathConst.EPSILON_SQ)
         {
-            const invLen = 1.0 / Math.sqrt(mag);
-            num = MathImpl.Scale(num, invLen);
+            num = MathImpl.Divide(num, [mag, mag, mag]);
         }
         else
         {
