@@ -95,4 +95,10 @@ export default class Vector3 extends VectorBase
         const result = MathImpl.Cross(vec_a.ToArray(), vec_b.ToArray());
         return new Vector3(result[0], result[1], result[2]);
     }
+
+    public Normalize(): Vector3
+    {
+        const n = MathImpl.Normalize(this._val);
+        return new Vector3(n[0], n[1], n[2]);
+    }
 }

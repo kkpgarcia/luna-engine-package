@@ -1,3 +1,4 @@
+import MathImpl from "./MathImpl";
 import Vector3 from "./Vector3";
 
 export enum Mat4 {
@@ -76,20 +77,9 @@ export default class Mat4x4
         )
     }
 
-    public static Projection(width: number, height: number, depth: number): Mat4x4
-    {
-        return new Mat4x4
-        (
-            2 / width, 0, 0, 0,
-            0, -2 / height, 0, 0,
-            0, 0, 2 / depth, 0,
-            -1, 1, 0, 1
-        )
-    }
-
     private static RotationX(angle: number): Mat4x4
     {
-        angle = angle * Math.PI / 180;
+        angle = MathImpl.DegreeToRad(angle);
         const c = Math.cos(angle);
         const s = Math.sin(angle);
 
@@ -104,7 +94,7 @@ export default class Mat4x4
 
     private static RotationY(angle: number): Mat4x4
     {
-        angle = angle * Math.PI / 180;
+        angle = MathImpl.DegreeToRad(angle);
         const c = Math.cos(angle);
         const s = Math.sin(angle);
 
@@ -119,7 +109,7 @@ export default class Mat4x4
 
     private static RotationZ(angle: number): Mat4x4
     {
-        angle = angle * Math.PI / 180;
+        angle = MathImpl.DegreeToRad(angle);
         const c = Math.cos(angle);
         const s = Math.sin(angle);
 
@@ -130,6 +120,43 @@ export default class Mat4x4
             0, 0, 1, 0,
             0, 0, 0, 1
         )
+    }
+
+    public static Orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number): Mat4x4
+    {
+        return new Mat4x4(
+            2 / (right - left), 0, 0, 0,
+            0, 2 / (top - bottom), 0, 0,
+            0, 0, 2 / (near - far), 0,
+       
+            (left + right) / (left - right),
+            (bottom + top) / (bottom - top),
+            (near + far) / (near - far),
+            1,
+        );
+    }
+
+    public static Projection(width: number, height: number, depth: number): Mat4x4
+    {
+        return new Mat4x4(
+            2 / width, 0, 0, 0,
+            0, -2 / height, 0, 0,
+            0, 0, 2 / depth, 0,
+           -1, 1, 0, 1,
+        );
+    }
+
+    public static Perspective(fieldOfView, aspect, near, far): Mat4x4
+    {
+        var f = Math.tan(Math.PI * 0.5 - 0.5 * (MathImpl.DegreeToRad(fieldOfView)));
+        var rangeInv = 1.0 / (near - far);
+
+        return new Mat4x4(
+            f / aspect, 0, 0, 0,
+            0, f, 0, 0,
+            0, 0, (near + far) * rangeInv, -1,
+            0, 0, near * far * rangeInv * 2, 0
+        );
     }
 
     public static Multiply(a: Mat4x4, b: Mat4x4): Mat4x4
@@ -153,6 +180,76 @@ export default class Mat4x4
             b.GetValue(Mat4.M30) * a.GetValue(Mat4.M01) + b.GetValue(Mat4.M31) * a.GetValue(Mat4.M11) + b.GetValue(Mat4.M32) * a.GetValue(Mat4.M21) + b.GetValue(Mat4.M33) * a.GetValue(Mat4.M31),
             b.GetValue(Mat4.M30) * a.GetValue(Mat4.M02) + b.GetValue(Mat4.M31) * a.GetValue(Mat4.M12) + b.GetValue(Mat4.M32) * a.GetValue(Mat4.M22) + b.GetValue(Mat4.M33) * a.GetValue(Mat4.M32),
             b.GetValue(Mat4.M30) * a.GetValue(Mat4.M03) + b.GetValue(Mat4.M31) * a.GetValue(Mat4.M13) + b.GetValue(Mat4.M32) * a.GetValue(Mat4.M23) + b.GetValue(Mat4.M33) * a.GetValue(Mat4.M33)
+        );
+    }
+
+    public static Inverse(m: Mat4x4): Mat4x4
+    {
+        var tmp_0  = m.GetValue(Mat4.M22) * m.GetValue(Mat4.M33);
+        var tmp_1  = m.GetValue(Mat4.M32) * m.GetValue(Mat4.M23);
+        var tmp_2  = m.GetValue(Mat4.M12) * m.GetValue(Mat4.M33);
+        var tmp_3  = m.GetValue(Mat4.M32) * m.GetValue(Mat4.M13);
+        var tmp_4  = m.GetValue(Mat4.M12) * m.GetValue(Mat4.M23);
+        var tmp_5  = m.GetValue(Mat4.M22) * m.GetValue(Mat4.M13);
+        var tmp_6  = m.GetValue(Mat4.M02) * m.GetValue(Mat4.M33);
+        var tmp_7  = m.GetValue(Mat4.M32) * m.GetValue(Mat4.M03);
+        var tmp_8  = m.GetValue(Mat4.M02) * m.GetValue(Mat4.M23);
+        var tmp_9  = m.GetValue(Mat4.M22) * m.GetValue(Mat4.M03);
+        var tmp_10 = m.GetValue(Mat4.M02) * m.GetValue(Mat4.M13);
+        var tmp_11 = m.GetValue(Mat4.M12) * m.GetValue(Mat4.M03);
+        var tmp_12 = m.GetValue(Mat4.M20) * m.GetValue(Mat4.M31);
+        var tmp_13 = m.GetValue(Mat4.M30) * m.GetValue(Mat4.M21);
+        var tmp_14 = m.GetValue(Mat4.M10) * m.GetValue(Mat4.M31);
+        var tmp_15 = m.GetValue(Mat4.M30) * m.GetValue(Mat4.M11);
+        var tmp_16 = m.GetValue(Mat4.M10) * m.GetValue(Mat4.M21);
+        var tmp_17 = m.GetValue(Mat4.M20) * m.GetValue(Mat4.M11);
+        var tmp_18 = m.GetValue(Mat4.M00) * m.GetValue(Mat4.M31);
+        var tmp_19 = m.GetValue(Mat4.M30) * m.GetValue(Mat4.M01);
+        var tmp_20 = m.GetValue(Mat4.M00) * m.GetValue(Mat4.M21);
+        var tmp_21 = m.GetValue(Mat4.M20) * m.GetValue(Mat4.M01);
+        var tmp_22 = m.GetValue(Mat4.M00) * m.GetValue(Mat4.M11);
+        var tmp_23 = m.GetValue(Mat4.M10) * m.GetValue(Mat4.M01);
+
+        var t0 = (tmp_0 *m.GetValue(Mat4.M11) + tmp_3 *m.GetValue(Mat4.M21) + tmp_4 *m.GetValue(Mat4.M31)) -
+                (tmp_1 *m.GetValue(Mat4.M11) + tmp_2 *m.GetValue(Mat4.M21) + tmp_5 *m.GetValue(Mat4.M31));
+        var t1 = (tmp_1 *m.GetValue(Mat4.M01) + tmp_6 *m.GetValue(Mat4.M21) + tmp_9 *m.GetValue(Mat4.M31)) -
+                (tmp_0 *m.GetValue(Mat4.M01) + tmp_7 *m.GetValue(Mat4.M21) + tmp_8 *m.GetValue(Mat4.M31));
+        var t2 = (tmp_2 *m.GetValue(Mat4.M01) + tmp_7 *m.GetValue(Mat4.M11) + tmp_10 *m.GetValue(Mat4.M31)) -
+                (tmp_3 *m.GetValue(Mat4.M01) + tmp_6 *m.GetValue(Mat4.M11) + tmp_11 *m.GetValue(Mat4.M31));
+        var t3 = (tmp_5 *m.GetValue(Mat4.M01) + tmp_8 *m.GetValue(Mat4.M11) + tmp_11 *m.GetValue(Mat4.M21)) -
+                (tmp_4 *m.GetValue(Mat4.M01) + tmp_9 *m.GetValue(Mat4.M11) + tmp_10 *m.GetValue(Mat4.M21));
+
+        var d = 1.0 / (m.GetValue(Mat4.M00) * t0 +m.GetValue(Mat4.M10) * t1 +m.GetValue(Mat4.M20) * t2 +m.GetValue(Mat4.M30) * t3);
+
+        return new Mat4x4(
+            d * t0,
+            d * t1,
+            d * t2,
+            d * t3,
+            d * ((tmp_1  * m.GetValue(Mat4.M10) + tmp_2  * m.GetValue(Mat4.M20) + tmp_5  * m.GetValue(Mat4.M30)) -
+                (tmp_0   * m.GetValue(Mat4.M10) + tmp_3  * m.GetValue(Mat4.M20) + tmp_4  * m.GetValue(Mat4.M30))),
+            d * ((tmp_0  * m.GetValue(Mat4.M00) + tmp_7  * m.GetValue(Mat4.M20) + tmp_8  * m.GetValue(Mat4.M30)) -
+                (tmp_1   * m.GetValue(Mat4.M00) + tmp_6  * m.GetValue(Mat4.M20) + tmp_9  * m.GetValue(Mat4.M30))),
+            d * ((tmp_3  * m.GetValue(Mat4.M00) + tmp_6  * m.GetValue(Mat4.M10) + tmp_11 * m.GetValue(Mat4.M30)) -
+                (tmp_2   * m.GetValue(Mat4.M00) + tmp_7  * m.GetValue(Mat4.M10) + tmp_10 * m.GetValue(Mat4.M30))),
+            d * ((tmp_4  * m.GetValue(Mat4.M00) + tmp_9  * m.GetValue(Mat4.M10) + tmp_10 * m.GetValue(Mat4.M20)) -
+                (tmp_5   * m.GetValue(Mat4.M00) + tmp_8  * m.GetValue(Mat4.M10) + tmp_11 * m.GetValue(Mat4.M20))),
+            d * ((tmp_12 * m.GetValue(Mat4.M13) + tmp_15 * m.GetValue(Mat4.M23) + tmp_16 * m.GetValue(Mat4.M33)) -
+                (tmp_13  * m.GetValue(Mat4.M13) + tmp_14 * m.GetValue(Mat4.M23) + tmp_17 * m.GetValue(Mat4.M33))),
+            d * ((tmp_13 * m.GetValue(Mat4.M03) + tmp_18 * m.GetValue(Mat4.M23) + tmp_21 * m.GetValue(Mat4.M33)) -
+                (tmp_12  * m.GetValue(Mat4.M03) + tmp_19 * m.GetValue(Mat4.M23) + tmp_20 * m.GetValue(Mat4.M33))),
+            d * ((tmp_14 * m.GetValue(Mat4.M03) + tmp_19 * m.GetValue(Mat4.M13) + tmp_22 * m.GetValue(Mat4.M33)) -
+                (tmp_15  * m.GetValue(Mat4.M03) + tmp_18 * m.GetValue(Mat4.M13) + tmp_23 * m.GetValue(Mat4.M33))),
+            d * ((tmp_17 * m.GetValue(Mat4.M03) + tmp_20 * m.GetValue(Mat4.M13) + tmp_23 * m.GetValue(Mat4.M23)) -
+                (tmp_16  * m.GetValue(Mat4.M03) + tmp_21 * m.GetValue(Mat4.M13) + tmp_22 * m.GetValue(Mat4.M23))),
+            d * ((tmp_14 * m.GetValue(Mat4.M22) + tmp_17 * m.GetValue(Mat4.M32) + tmp_13 * m.GetValue(Mat4.M12)) -
+                (tmp_16  * m.GetValue(Mat4.M32) + tmp_12 * m.GetValue(Mat4.M12) + tmp_15 * m.GetValue(Mat4.M22))),
+            d * ((tmp_20 * m.GetValue(Mat4.M32) + tmp_12 * m.GetValue(Mat4.M02) + tmp_19 * m.GetValue(Mat4.M22)) -
+                (tmp_18  * m.GetValue(Mat4.M22) + tmp_21 * m.GetValue(Mat4.M32) + tmp_13 * m.GetValue(Mat4.M02))),
+            d * ((tmp_18 * m.GetValue(Mat4.M12) + tmp_23 * m.GetValue(Mat4.M32) + tmp_15 * m.GetValue(Mat4.M02)) -
+                (tmp_22  * m.GetValue(Mat4.M32) + tmp_14 * m.GetValue(Mat4.M02) + tmp_19 * m.GetValue(Mat4.M12))),
+            d * ((tmp_22 * m.GetValue(Mat4.M22) + tmp_16 * m.GetValue(Mat4.M02) + tmp_21 * m.GetValue(Mat4.M12)) -
+                (tmp_20  * m.GetValue(Mat4.M12) + tmp_23 * m.GetValue(Mat4.M22) + tmp_17 * m.GetValue(Mat4.M02)))
         );
     }
 

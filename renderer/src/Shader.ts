@@ -1,5 +1,4 @@
 import { Debug } from "@luna-engine/core";
-import { AppCache, CacheType } from "@luna-engine/utility";
 import RenderingContext from "./RenderingContext";
 
 export default class Shader
@@ -7,14 +6,12 @@ export default class Shader
     private _shader: WebGLProgram;
     private _uniformLocationCache: Map<string, WebGLUniformLocation>;
 
-    constructor(filePath: string)
+    constructor(source: string)
     {
-        const source = this.ParseShader(AppCache.instance.GetShader(filePath));
+        const parsed = this.ParseShader(source);
 
-        this._shader = this.CreateProgram(source[0], source[1]);
+        this._shader = this.CreateProgram(parsed[0], parsed[1]);
         this._uniformLocationCache = new Map<string, WebGLUniformLocation>();
-
-        AppCache.instance.DisposeKey(CacheType.SHADER, filePath);
     }
 
     private CreateProgram(vertexSource: string, fragmentSource: string): WebGLProgram

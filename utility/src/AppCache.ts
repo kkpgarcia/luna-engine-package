@@ -6,22 +6,19 @@ export enum CacheType
 
 export default class AppCache
 {
-    private static _instance: AppCache;
+    private static _instance: AppCache = new AppCache();
     public static get instance(): AppCache
     {
-        if (!this._instance)
-        {
-            this._instance = new AppCache();
-        }
-
         return this._instance;
     }
 
     private _textureCache: Map<string, HTMLImageElement>;
     private _shaderCache: Map<string, string>;
 
-    constructor()
+    private constructor()
     {
+        AppCache._instance = this;
+
         this._textureCache = new Map<string, HTMLImageElement>();
         this._shaderCache = new Map<string, string>();
     }

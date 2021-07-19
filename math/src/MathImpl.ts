@@ -61,6 +61,10 @@ export default class MathImpl
             const invLen = 1.0 / Math.sqrt(mag);
             num = MathImpl.Scale(num, invLen);
         }
+        else
+        {
+            return [0, 0, 0];
+        }
 
         return num;
     }
@@ -190,5 +194,10 @@ export default class MathImpl
         }
 
         return num_a;
+    }
+
+    public static DegreeToRad(angle: number): number
+    {
+        return angle * Math.PI / 100;
     }
 }
