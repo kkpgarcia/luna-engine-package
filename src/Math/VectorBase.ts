@@ -1,0 +1,62 @@
+import MathImpl from "./MathImpl";
+
+export default class VectorBase
+{
+    protected _val: number[];
+
+    public Add_i(vec: VectorBase): VectorBase
+    {
+        this._val = MathImpl.Add(this._val, vec.ToArray());
+        return this as VectorBase;
+    }
+
+    public Subtract_i(vec: VectorBase): VectorBase
+    {
+        this._val = MathImpl.Subtract(this._val, vec.ToArray());
+        return this;
+    }
+    
+    public Divide_i(vec: VectorBase): VectorBase {
+        this._val = MathImpl.Divide(this._val, vec.ToArray());
+        return this;
+    }
+
+    public Scale_i(scale: number): VectorBase {
+        this._val = MathImpl.Scale(this._val, scale);
+        return this;
+    }
+
+    public Magnitude(): number {
+        return MathImpl.Magnitude(this._val);
+    }
+
+    public static Dot(vec_a: VectorBase, vec_b: VectorBase): number {
+        return MathImpl.Dot(vec_a.ToArray(), vec_b.ToArray());
+    }
+
+    public static Distance(from: VectorBase, to: VectorBase): number {
+        return MathImpl.Distance(from.ToArray(), to.ToArray());
+    }
+
+    public Lerp_i(from: VectorBase, to: VectorBase, time: number): VectorBase {
+        this._val = MathImpl.Lerp(from.ToArray(), to.ToArray(), time);
+        return this;
+    }
+
+    public ToArray(): number[]
+    {
+        return this._val;
+    }
+
+    public Equals(other: VectorBase): boolean
+    {
+        if (this._val.length == 3)
+        {
+            return this._val[0] === other._val[0] && this._val[1] === other._val[1] && this._val[2] === other._val[2];
+        }
+        else
+        {
+            return this._val[0] === other._val[0] && this._val[1] === other._val[1]; 
+        }
+    }
+}

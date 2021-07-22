@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "module": "es2020",
+        "target": "es2015",
+        "declaration": true,
+        "outDir": "./dist",
+        "esModuleInterop": true,
+        "moduleResolution": "node"
+    },
+    "include": [
+        "src/**/*"
+, "../renderer/src/Screen.ts"    ]
+}
