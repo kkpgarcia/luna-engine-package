@@ -197,6 +197,6 @@ export default class MathImpl
 
     public static DegreeToRad(angle: number): number
     {
-        return angle * Math.PI / 100;
+        return angle * Math.PI / 180;
     }
 }

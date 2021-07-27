@@ -1,21 +1,23 @@
 import Services from "../Core/Service/Services";
-import { CacheType } from "../Utility/AppCache";
 import Debug from "../Core/Debug/Debug";
 
 export default class Shader
 { 
     private _shader: WebGLProgram;
     private _uniformLocationCache: Map<string, WebGLUniformLocation>;
+    private _availableUniforms: Map<string, string>;
 
     constructor(source: string)
     {
+        this._uniformLocationCache = new Map<string, WebGLUniformLocation>();
+        this._availableUniforms = new Map<string, string>();
+
         const cached = Services.AppCache.GetShader(source);
         const parsed = this.ParseShader(cached);
 
         this._shader = this.CreateProgram(parsed[0], parsed[1]);
-        this._uniformLocationCache = new Map<string, WebGLUniformLocation>();
 
-        Services.AppCache.DisposeKey(CacheType.SHADER, source);
+        // Services.AppCache.DisposeKey(CacheType.SHADER, source);
     }
 
     private CreateProgram(vertexSource: string, fragmentSource: string): WebGLProgram
@@ -182,19 +184,19 @@ export default class Shader
         gl.uniform1ui(this.GetUniformLocation(name), data)
     }
 
-    public SetUniform2uiv(name: string, data: Float32List): void
+    public SetUniform2uiv(name: string, data: Uint32List): void
     {
         const gl = Services.RenderingContext.gl;
         gl.uniform2uiv(this.GetUniformLocation(name), data);
     }
 
-    public SetUniform3uiv(name: string, data: Float32List): void
+    public SetUniform3uiv(name: string, data: Uint32List): void
     {
         const gl = Services.RenderingContext.gl;
         gl.uniform3uiv(this.GetUniformLocation(name), data)
     }
 
-    public SetUniform4uiv(name: string, data: Float32List): void
+    public SetUniform4uiv(name: string, data: Uint32List): void
     {
         const gl = Services.RenderingContext.gl;
         gl.uniform4uiv(this.GetUniformLocation(name), data);
@@ -229,6 +231,8 @@ export default class Shader
 
         const location = gl.getUniformLocation(this._shader, name);
         
+        // console.log(this.HasUniform);
+
         if (!location)
         {
             Debug.Error("Uniform " + name + " doesn't exists");
@@ -237,6 +241,17 @@ export default class Shader
         this._uniformLocationCache.set(name, location);
 
         return location;
+    }
+
+    public HasUniform(name: string): boolean
+    {
+        
+        return this._availableUniforms.has(name);
+    }
+
+    public GetUniformType(name: string): string
+    {
+        return this._availableUniforms.get(name);
     }
 
     private ParseShader(src: string): string[]
@@ -248,6 +263,13 @@ export default class Shader
        for (let i = 0; i < lines.length; i++)
        {
             const line = lines[i];
+
+            //Quick retrieval of uniforms
+            if (line.includes("uniform"))
+            {
+                const uniformLine = line.split(' ');
+                this._availableUniforms.set(uniformLine[2].replace(';', ''), uniformLine[1]);
+            }
             
             if (line === "#vertex" || line === "#fragment")
             {

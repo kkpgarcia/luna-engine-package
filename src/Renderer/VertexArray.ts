@@ -1,16 +1,23 @@
 import Services from "../Core/Service/Services";
+import IndexBuffer from "./IndexBuffer";
 import VertexBuffer from "./VertexBuffer";
 import VertexBufferElement from "./VertexBufferElement";
 import VertexBufferLayout from "./VertexBufferLayout";
 
 export default class VertexArray
 {
-    private _renderer: WebGLVertexArrayObject;
+    private _vertexArray: WebGLVertexArrayObject;
+    private _indexBuffer: IndexBuffer;
+
+    public get indexBuffer(): IndexBuffer
+    {
+        return this._indexBuffer;
+    }
 
     constructor()
     {
         const gl = Services.RenderingContext.gl;
-        this._renderer = gl.createVertexArray();
+        this._vertexArray = gl.createVertexArray();
     }
 
     public AddBuffer(vertexBuffer: VertexBuffer, layout: VertexBufferLayout): void
@@ -34,10 +41,17 @@ export default class VertexArray
 
     }
 
+    public SetIndexBuffer(indexBuffer: IndexBuffer): void
+    {
+        this.Bind();
+        indexBuffer.Bind();
+        this._indexBuffer = indexBuffer;
+    }
+
     public Bind(): void
     {
         const gl = Services.RenderingContext.gl;
-        gl.bindVertexArray(this._renderer);
+        gl.bindVertexArray(this._vertexArray);
     }
 
     public Unbind(): void

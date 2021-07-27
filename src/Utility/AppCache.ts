@@ -1,17 +1,23 @@
 export enum CacheType
 {
     TEXTURE,
-    SHADER
+    SHADER,
+    TEXT,
+    FONT
 }
 
 export default class AppCache
 {
     private _textureCache: Map<string, HTMLImageElement>;
+    private _fontCache: Map<string, HTMLImageElement>;
     private _shaderCache: Map<string, string>;
+    private _textCache: Map<string, string>;
 
     constructor()
     {
         this._textureCache = new Map<string, HTMLImageElement>();
+        this._textCache = new Map<string, string>();
+        this._fontCache = new Map<string, HTMLImageElement>();
         this._shaderCache = new Map<string, string>();
     }
 
@@ -23,6 +29,10 @@ export default class AppCache
                 return this._textureCache.size;
             case CacheType.SHADER:
                 return this._shaderCache.size;
+            case CacheType.FONT:
+                return this._fontCache.size;
+            case CacheType.TEXT:
+                return this._textCache.size;
             default:
                 return -1;
         }
@@ -30,34 +40,57 @@ export default class AppCache
 
     public AddTexture(key: string, image: HTMLImageElement, override?: false): void
     {
-        if (this.KeyCheck(this._textureCache, key) && !override)
-        {
-            return;
-        }
-
-        //TODO: Image sanity check herer
-
-        this._textureCache.set(key, image);
+        this.AddCache<HTMLImageElement>(key, image, this._textureCache, override);
+    }
+    
+    public AddFont(key: string, image: HTMLImageElement, override?: false): void
+    {
+        this.AddCache<HTMLImageElement>(key, image, this._fontCache, override);
     }
 
     public AddShader(key: string, source: string, override?: false): void
     {
-        if (this.KeyCheck(this._shaderCache, key) && !override)
+        this.AddCache<string>(key, source, this._shaderCache, override);
+    }
+
+    public AddText(key: string, source: string, override?: false): void
+    {
+        this.AddCache<string>(key, source, this._textCache, override);
+    }
+
+    private AddCache<T>(key: string, data: T, map: Map<string, T>, override?: false): void
+    {
+        if (this.KeyCheck(map, key) && !override)
         {
             return;
         }
 
-        this._shaderCache.set(key, source);
+        map.set(key, data);
     }
 
     public GetTexture(key: string): HTMLImageElement
     {
-        return this._textureCache.get(key);
+        return this.GetCache<HTMLImageElement>(key, this._textureCache);
+    }
+
+    public GetFont(key: string): HTMLImageElement
+    {
+        return this.GetCache<HTMLImageElement>(key, this._fontCache);
     }
 
     public GetShader(key: string): string
     {
-        return this._shaderCache.get(key);
+        return this.GetCache<string>(key, this._shaderCache);
+    }
+    
+    public GetText(key: string): string
+    {
+        return this.GetCache<string>(key, this._textCache);
+    }
+
+    private GetCache<T>(key: string, map: Map<string, T>): T
+    {
+        return map.get(key);
     }
 
     public DisposeKey(type: CacheType, key: string): void
@@ -67,8 +100,14 @@ export default class AppCache
             case CacheType.TEXTURE:
                 this._textureCache.delete(key);
                 break;
+            case CacheType.FONT:
+                this._fontCache.delete(key);
+                break;
             case CacheType.SHADER:
                 this._shaderCache.delete(key);
+                break;
+            case CacheType.TEXT:
+                this._textCache.delete(key);
                 break;
         }
     }
@@ -80,8 +119,14 @@ export default class AppCache
             case CacheType.TEXTURE:
                 this._textureCache.clear();
                 break;
+            case CacheType.FONT:
+                this._fontCache.clear();
+                break;
             case CacheType.SHADER:
                 this._shaderCache.clear();
+                break;
+            case CacheType.TEXT:
+                this._textCache.clear();
                 break;
         }
     }
@@ -89,36 +134,22 @@ export default class AppCache
     public DisposeAll(): void
     {
         this._textureCache.clear();
+        this._textCache.clear();
         this._shaderCache.clear();
+        this._fontCache.clear();
     }
 
-    public CheckContains(type: CacheType, keys: string[]): boolean
+    public CheckContains(keys: string[]): boolean
     {
         let retVal = true;
         for (let i = 0; i < keys.length; i++)
         {
             const key = keys[i];
 
-            switch(type)
-            {
-                case CacheType.TEXTURE:
-                    if (!this._textureCache.has(key))
-                    {
-                        retVal = false;
-                    }
-                    break;
-                case CacheType.SHADER:
-                    if (!this._shaderCache.has(key))
-                    {
-                        retVal = false;
-                    }
-                    break;
-            }
-
-            if (!retVal)
-            {
-                break;
-            }
+            retVal = this.KeyCheck(this._textureCache, key) || 
+                     this.KeyCheck(this._textCache, key) ||
+                     this.KeyCheck(this._shaderCache, key) ||
+                     this.KeyCheck(this._fontCache, key);
         }
 
         return retVal;
@@ -126,8 +157,10 @@ export default class AppCache
 
     public CheckCache()
     {
-        console.log(this._shaderCache);
+        console.log(this._textCache);
         console.log(this._textureCache);
+        console.log(this._fontCache);
+        console.log(this._shaderCache);
     }
 
     private KeyCheck<K, V>(map: Map<K, V>, key: K): boolean
