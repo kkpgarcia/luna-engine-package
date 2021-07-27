@@ -11,16 +11,18 @@ import Mat4x4 from "./Math/Mat4x4";
 import Vector2 from "./Math/Vector2";
 import Vector3 from "./Math/Vector3";
 
-import IndexBuffer from "./Renderer/IndexBuffer";
+// import IndexBuffer from "./Renderer/IndexBuffer";
 import Renderer from "./Renderer/Renderer";
 import RenderingContext from "./Renderer/RenderingContext";
 import Screen from "./Renderer/Screen";
 import Shader  from "./Renderer/Shader";
 import Texture from "./Renderer/Texture";
-import VertexArray from "./Renderer/VertexArray";
-import VertexBuffer from "./Renderer/VertexBuffer";
-import VertexBufferElement from "./Renderer/VertexBufferElement";
-import VertexBufferLayout from "./Renderer/VertexBufferLayout";
+// import VertexArray from "./Renderer/VertexArray";
+// import VertexBuffer from "./Renderer/VertexBuffer";
+// import VertexBufferElement from "./Renderer/VertexBufferElement";
+// import VertexBufferLayout from "./Renderer/VertexBufferLayout";
+import Mesh from "./Renderer/Mesh";
+import Material from "./Renderer/Material";
 
 import AppCache from "./Utility/AppCache";
 import ArrayEx from "./Utility/ArrayEx";
@@ -47,16 +49,18 @@ export {
     Vector3,
 
     //Renderer
-    IndexBuffer,
+    // IndexBuffer,
     Renderer,
     RenderingContext,
     Screen,
     Texture,
-    VertexArray,
-    VertexBuffer,
-    VertexBufferElement,
-    VertexBufferLayout,
+    // VertexArray,
+    // VertexBuffer,
+    // VertexBufferElement,
+    // VertexBufferLayout,
     Shader,
+    Mesh,
+    Material,
 
     //Utility
     AppCache,
